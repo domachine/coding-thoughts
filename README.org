@@ -28,6 +28,8 @@ function createUserReportPrintThunk(printer, hydratePrintResultActionCreator) {
   }
 }
 
+// ----- Test -------
+
 let printerCalled = false
 let hydrated = false
 let dispatched = false
@@ -46,7 +48,7 @@ assert.equal(hydrated, true)
 assert.equal(dispatched, true)
 assert.equal(dispatchArgs[0], hydrateAction)
 
-// -----------
+// ----- Integration --
 
 //class Component = ({ print }) => (
 //  <button onClick={print}></button>
