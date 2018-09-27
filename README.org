@@ -80,7 +80,7 @@ assert.equal(dispatchArgs[0], hydrateAction)
    - Start out with redux-thunk
    - Use sagas if things get more complex
 
-** Thoughts on testing
+* Thoughts on testing
 
    Coding without testing is like getting a loan. Loans have benefits
    like you can buy something immediately. But you have to take care
