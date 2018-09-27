@@ -1,0 +1,99 @@
+* Questions
+
+** Discuss authentication and refresh token idea
+
+   - Ease of use: Serverside sessions
+   - JWTs take longer to implement but make the system simpler and
+     reduce the load on the server
+
+** Discuss redux-offline in combo with react native
+
+   - Sorry, never used react native
+
+** Discuss how to test redux-offline
+
+   - Use an integration test system like cypress
+   - Seperate business logic from framework code
+     - Test your business logic with unit tests
+
+#+BEGIN_SRC js
+const assert = require('assert')
+
+function createUserReportPrintThunk(printer, hydratePrintResultActionCreator) {
+  return function userReportPrintThunk() {
+    return (dispatch) => {
+      printer()
+      dispatch(hydratePrintResultActionCreator())
+    }
+  }
+}
+
+let printerCalled = false
+let hydrated = false
+let dispatched = false
+let dispatchArgs = []
+
+const hydrateAction = { _hydrateAction: true }
+
+const printer = () => { printerCalled = true }
+const hydratePrintResultActionCreator = jest.fn()
+const dispatch = jest.fn()
+const userReportPrintThunk = createUserReportPrintThunk(printer, hydratePrintResultActionCreator)
+
+userReportPrintThunk()(dispatch)
+assert.equal(printerCalled, true)
+assert.equal(hydrated, true)
+assert.equal(dispatchArgs[0], hydrateAction)
+
+// -----------
+
+//class Component = ({ print }) => (
+//  <button onClick={print}></button>
+//)
+
+//connect(null, {
+//  print: createUserReportPrintThunk(createPrinter())
+//})(Component)
+
+#+END_SRC
+
+#+RESULTS:
+: undefined
+
+
+- Unit tests
+  - Screenshot testing
+- Integration tests
+
+** How to speed up UI development
+
+   - Produce reliable tests which you can trust.
+   - Refactor after building new features
+   - Produce a suite of small unit tests to be able to
+     quickly set up test-cases.
+
+** Which redux middleware should we use to handle async actions
+
+   thunk, saga, redux-promise or something else? Compatibility
+   with Redux offline is key.
+
+   - Start out with redux-thunk
+   - Use sagas if things get more complex
+
+** Thoughts on testing
+
+   Coding without testing is like getting a loan. Loans have benefits
+   like you can buy something immediately. But you have to take care
+   because if you don't pay your loan back but get more loan you're
+   likely to drown.
+
+   When building products I usually take the opportunity to hack on a
+   prototype pretty quickly without tests. This comes with the benefit
+   that I can try out things and satisfy my hunger for results and
+   something visible. I also get a feeling about new frameworks. This
+   prototype is usually stuffed in one single file so that I can
+   iterate quickly.
+
+   The next step is my implementation step where I use test driven
+   development to rewrite my prototype and make real progress. In
+   fact: I'm paying back my dept.
