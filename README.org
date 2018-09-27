@@ -36,13 +36,14 @@ let dispatchArgs = []
 const hydrateAction = { _hydrateAction: true }
 
 const printer = () => { printerCalled = true }
-const hydratePrintResultActionCreator = jest.fn()
-const dispatch = jest.fn()
+const hydratePrintResultActionCreator = () => { hydrated = true; return hydrateAction; }
+const dispatch = (arg) => { dispatchArgs.push(arg); dispatched = true; }
 const userReportPrintThunk = createUserReportPrintThunk(printer, hydratePrintResultActionCreator)
 
 userReportPrintThunk()(dispatch)
 assert.equal(printerCalled, true)
 assert.equal(hydrated, true)
+assert.equal(dispatched, true)
 assert.equal(dispatchArgs[0], hydrateAction)
 
 // -----------
